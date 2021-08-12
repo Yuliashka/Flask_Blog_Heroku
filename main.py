@@ -11,6 +11,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 from decouple import config
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config('KEY')
@@ -221,5 +222,9 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=5000)
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    # For HEROKU
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
