@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -11,6 +11,13 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
+import smtplib
+
+
+# VARIABLES:
+# MY GOOGLE ACCOUNT:
+EMAIL = os.getenv("MY_EMAIL")
+PASSWORD = os.getenv("MY_PASSWORD")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -163,9 +170,51 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 
-@app.route("/contact")
+# @app.route("/contact")
+# def contact():
+#     return render_template("contact.html", current_user=current_user)
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html", current_user=current_user)
+    message_is_sent = False
+    if request.method == "POST":
+        # checking if the user already exists in our db:
+        if not current_user.is_authenticated:
+            flash("You need to login or register to send a message.")
+            return redirect(url_for('login'))
+        else:
+            # GETTING USERS MESSAGE:
+            # getting information from input at contact.html page (text):
+            name = request.form.get("name")
+            email = request.form.get("email")
+            tel = request.form.get("tel")
+            message = request.form.get("message")
+
+            # SENDING MESSAGE TO EMAIL:
+            # CREATING AN OBJECT:
+            # we connect to gmail.com server:
+            # we create an object from SMTP class.
+            with smtplib.SMTP("smtp.gmail.com") as connection:
+                # SECURING THE CONNECTION:
+                # the next way we call starttls() = transport layer Security. A way of securing a connection to
+                # our email server. To prevent reading of our emails during sending to server.
+                connection.starttls()
+
+                # LOGGING IN:
+                connection.login(user=EMAIL, password=PASSWORD)
+
+                # SENDING EMAILS:
+                # emails without title are often considered as spam. its better create a title - subject.
+                connection.sendmail(
+                    from_addr=EMAIL,
+                    to_addrs="laramera@outlook.it",
+                    msg=f"Subject:BlogPost Message\n\nUser name: {name}\n\n"
+                        f"User email: {email}\n\n User message: {message}"
+                )
+
+            message_is_sent = True
+            return render_template("contact.html", message_is_sent=message_is_sent)
+
+    return render_template("contact.html", message_is_sent=message_is_sent)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
