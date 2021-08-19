@@ -290,7 +290,7 @@ def about():
     # we pass it to our about.page
     return render_template("about.html", current_user=current_user)
 
-
+# ANGELA's CODE:
 # @app.route("/contact")
 # def contact():
 #     return render_template("contact.html", current_user=current_user)
