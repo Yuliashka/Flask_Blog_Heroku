@@ -1,13 +1,13 @@
 {% include "header.html" %}
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url({{ url_for('static', filename='img/contact.jpg')}})">
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/contact.jpg')}}')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="page-heading">
-            <!-- Changing the page header text depending if the customer is already sent me
+        <!-- Changing the page header text depending if the customer is already sent me
         a message or not yet -->
             {% if not message_is_sent %}
             <h1>Contact Me</h1>
@@ -16,6 +16,7 @@
             <h1>Message Is Sent</h1>
             <span class="subheading">Thank you for your message!</span>
             {% endif %}
+
           </div>
         </div>
       </div>
@@ -30,7 +31,7 @@
         <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
         <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
         <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-        <form name="sentMessage" id="contactForm" novalidate>
+        <form action="{{ url_for('contact') }}" method="post" name="sentMessage" id="contactForm" novalidate>
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
               <label>Name</label>

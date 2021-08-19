@@ -35,12 +35,14 @@ from functools import wraps
 
 # VARIABLES:
 # MY GOOGLE ACCOUNT:
-EMAIL = os.getenv("MY_EMAIL")
-PASSWORD = os.getenv("MY_PASSWORD")
+# EMAIL = os.getenv("MY_EMAIL")
+# PASSWORD = os.getenv("MY_PASSWORD")
+
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 ckeditor = CKEditor(app)
 Bootstrap(app)
 # INTEGRATION GRAVATAR TO FLASK:
@@ -55,6 +57,7 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 ##CONNECT TO DB
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -291,10 +294,10 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 # ANGELA's CODE:
-#
 # @app.route("/contact")
 # def contact():
 #     return render_template("contact.html", current_user=current_user)
+
 # TO ALLOW TO USER SEND A MESSAGE TO MY EMAIL:
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
@@ -311,28 +314,32 @@ def contact():
             email = request.form.get("email")
             tel = request.form.get("tel")
             message = request.form.get("message")
-
-            # SENDING MESSAGE TO EMAIL:
-            # CREATING AN OBJECT:
-            # we connect to gmail.com server:
-            # we create an object from SMTP class.
-            with smtplib.SMTP("smtp.gmail.com") as connection:
-                # SECURING THE CONNECTION:
-                # the next way we call starttls() = transport layer Security. A way of securing a connection to
-                # our email server. To prevent reading of our emails during sending to server.
-                connection.starttls()
-
-                # LOGGING IN:
-                connection.login(user=EMAIL, password=PASSWORD)
-
-                # SENDING EMAILS:
-                # emails without title are often considered as spam. its better create a title - subject.
-                connection.sendmail(
-                    from_addr=EMAIL,
-                    to_addrs="laramera@outlook.it",
-                    msg=f"Subject:BlogPost Message\n\nUser name: {name}\n\n"
-                        f"User email: {email}\n\n User message: {message}"
-                )
+            # print(name)
+            # print(email)
+            # print(tel)
+            # print(message)
+            #
+            # # SENDING MESSAGE TO EMAIL:
+            # # CREATING AN OBJECT:
+            # # we connect to gmail.com server:
+            # # we create an object from SMTP class.
+            # with smtplib.SMTP("smtp.gmail.com") as connection:
+            #     # SECURING THE CONNECTION:
+            #     # the next way we call starttls() = transport layer Security. A way of securing a connection to
+            #     # our email server. To prevent reading of our emails during sending to server.
+            #     connection.starttls()
+            #
+            #     # LOGGING IN:
+            #     connection.login(user=EMAIL, password=PASSWORD)
+            #
+            #     # SENDING EMAILS:
+            #     # emails without title are often considered as spam. its better create a title - subject.
+            #     connection.sendmail(
+            #         from_addr=EMAIL,
+            #         to_addrs="laramera@outlook.it",
+            #         msg=f"Subject:BlogPost Message\n\nUser name: {name}\n\n"
+            #             f"User email: {email}\n\n User message: {message}"
+            #     )
 
             message_is_sent = True
             return render_template("contact.html", message_is_sent=message_is_sent)
