@@ -27,6 +27,7 @@ from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 # blog commenters. Gravatar allows you to change the image that you use across the blog
 # websites that use Gravatar here: http://en.gravatar.com/:
 from flask_gravatar import Gravatar
+# for .env file:
 import os
 
 # we are using this python module to create a new SMTP object (for email sending):
