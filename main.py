@@ -9,6 +9,7 @@
 # ENVIRONMENT FILE CREATION: https://able.bio/rhett/how-to-set-and-get-environment-variables-in-python--274rgt5
 # CREATING GITIGNORE FILE: https://www.toptal.com/developers/gitignore
 # (go to this link, write Flask, copy all info and add to .gitignore file, commit).
+# PYTHON ENVIRONMENT VARS: https://stackoverflow.com/questions/40216311/reading-in-environment-variables-from-an-environment-file
 
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
@@ -27,16 +28,22 @@ from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 # websites that use Gravatar here: http://en.gravatar.com/:
 from flask_gravatar import Gravatar
 import os
+
 # we are using this python module to create a new SMTP object (for email sending):
 import smtplib
 # TO PROTECT OUR ROUTES FROM ACCESS OF NOT LOGGED IN USERS (FROM USERS WITH ID DIFFERENT FROM ID=1):
 from functools import wraps
+# I use Python Dotenv Library. Just install the library pip install python-dotenv,
+# create a .env file with your environment variables.
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # VARIABLES:
 EMAIL = os.getenv("MY_EMAIL")
 PASSWORD = os.getenv("MY_PASSWORD")
-
+# EMAIL = "WantToTestMyApp@gmail.com"
+# PASSWORD = "vstalaiposhla123"
 
 app = Flask(__name__)
 
@@ -55,8 +62,10 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 # CONNECT TO DB
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
