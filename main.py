@@ -42,8 +42,6 @@ load_dotenv()
 # VARIABLES:
 EMAIL = os.getenv("MY_EMAIL")
 PASSWORD = os.getenv("MY_PASSWORD")
-# EMAIL = "WantToTestMyApp@gmail.com"
-# PASSWORD = "vstalaiposhla123"
 
 app = Flask(__name__)
 
@@ -62,10 +60,9 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 # CONNECT TO DB
-# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
