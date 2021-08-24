@@ -41,8 +41,8 @@ load_dotenv()
 
 
 # VARIABLES:
-EMAIL = os.environ.get("MY_EMAIL")
-PASSWORD = os.environ.get("MY_PASSWORD")
+# EMAIL = os.environ.get("MY_EMAIL")
+# PASSWORD = os.environ.get("MY_PASSWORD")
 
 app = Flask(__name__)
 
@@ -335,12 +335,12 @@ def contact():
                 connection.starttls()
 
                 # LOGGING IN:
-                connection.login(user=EMAIL, password=PASSWORD)
+                connection.login(user=os.environ.get('MY_EMAIL'), password=os.environ.get('MY_PASSWORD'))
 
                 # SENDING EMAILS:
                 # emails without title are often considered as spam. its better create a title - subject.
                 connection.sendmail(
-                    from_addr=EMAIL,
+                    from_addr=os.environ.get('MY_EMAIL'),
                     to_addrs="laramera@outlook.it",
                     msg=f"Subject:BlogPost Message\n\nUser name: {name}\n\n"
                         f"User email: {email}\n\n User message: {message}"
