@@ -10,6 +10,8 @@
 # CREATING GITIGNORE FILE: https://www.toptal.com/developers/gitignore
 # (go to this link, write Flask, copy all info and add to .gitignore file, commit).
 # PYTHON ENVIRONMENT VARS: https://stackoverflow.com/questions/40216311/reading-in-environment-variables-from-an-environment-file
+# FLASK-EMAIL: https://pythonhosted.org/Flask-Mail/
+# https://www.reddit.com/r/flask/comments/2vu3ft/af_having_trouble_getting_flask_mail_to_work_with/
 
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
@@ -34,17 +36,15 @@ import os
 import smtplib
 # TO PROTECT OUR ROUTES FROM ACCESS OF NOT LOGGED IN USERS (FROM USERS WITH ID DIFFERENT FROM ID=1):
 from functools import wraps
-# I use Python Dotenv Library. Just install the library pip install python-dotenv,
-# create a .env file with your environment variables.
-from dotenv import load_dotenv
-load_dotenv()
-
 
 # VARIABLES:
-# EMAIL = os.environ.get("MY_EMAIL")
-# PASSWORD = os.environ.get("MY_PASSWORD")
+# MY_EMAIL = os.environ.get("MY_EMAIL")
+# MY_PASSWORD = os.environ.get("MY_PASSWORD")
+MY_EMAIL = "WantToTestMyApp@gmail.com"
+MY_PASSWORD = "vstalaiposhla123"
 
 app = Flask(__name__)
+
 
 ckeditor = CKEditor(app)
 Bootstrap(app)
@@ -60,9 +60,10 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 # CONNECT TO DB
-
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -335,12 +336,12 @@ def contact():
                 connection.starttls()
 
                 # LOGGING IN:
-                connection.login(user=os.environ.get('MY_EMAIL'), password=os.environ.get('MY_PASSWORD'))
+                connection.login(user=MY_EMAIL, password=MY_PASSWORD)
 
                 # SENDING EMAILS:
                 # emails without title are often considered as spam. its better create a title - subject.
                 connection.sendmail(
-                    from_addr=os.environ.get('MY_EMAIL'),
+                    from_addr=MY_EMAIL,
                     to_addrs="laramera@outlook.it",
                     msg=f"Subject:BlogPost Message\n\nUser name: {name}\n\n"
                         f"User email: {email}\n\n User message: {message}"
